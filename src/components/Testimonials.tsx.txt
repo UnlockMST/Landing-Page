@@ -1,0 +1,79 @@
+"use client";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+
+const testimonials = [
+  {
+    quote: `Before working with Gabriel, I tried a massage therapist specializing in myofascial rehabilitation. After three sessions and a commitment to implementing specific exercises at home, there was little progress. That was exactly the opposite of my experience with Gabriel. After four sessions my lower back and knee pain are gone. My core is stronger. I’m hiking 5-10 miles, up and down stairs without pain, and can go from a sitting position to standing effortlessly.
+
+    Gabriel gave me exercises to implement outside of our meetings, checks to see how things are going, and continually monitors my progress. He is always on time, professional in both his behavior and communication and exercises a great deal of patience. From the results I’ve experienced in such a short time, I highly recommend Gabriel’s services to everyone.`,
+    name: "Gwen",
+    role: "Mom of 5",
+  },
+  {
+    quote: `Gabriel’s coaching pushed me past my limits. I’ve gained strength and confidence in ways I never thought possible.`,
+    name: "Marcus",
+    role: "Amateur Boxer",
+  },
+  {
+    quote: `The assisted stretching has been life-changing. My mobility has improved, and I finally feel free from nagging aches.`,
+    name: "Sophia",
+    role: "Dancer",
+  },
+];
+
+export default function Testimonials() {
+  const [index, setIndex] = useState(0);
+
+  const prevTestimonial = () => {
+    setIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
+  };
+
+  const nextTestimonial = () => {
+    setIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
+  };
+
+  const { quote, name, role } = testimonials[index];
+
+  return (
+    <section className="py-16 bg-black text-white">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2 className="font-anton text-4xl lg:text-6xl mb-8">
+            THE RESULTS SPEAK FOR THEMSELVES.
+          </h2>
+        </div>
+
+        <div className="max-w-4xl mx-auto bg-gray-900 rounded-lg p-8 mb-12 relative">
+          <p className="text-lg leading-relaxed mb-6">"{quote}"</p>
+          <div>
+            <p className="font-bold text-white">{name}</p>
+            <p className="text-[#D77A61]">{role}</p>
+          </div>
+
+          {/* Carousel controls */}
+          <div className="flex justify-between mt-6">
+            <Button
+              onClick={prevTestimonial}
+              className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6"
+            >
+              Prev
+            </Button>
+            <Button
+              onClick={nextTestimonial}
+              className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6"
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+
+        <div className="text-center">
+          <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-3">
+            Read More Reviews
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}

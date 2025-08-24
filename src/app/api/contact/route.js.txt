@@ -1,0 +1,44 @@
+import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
+
+export async function POST(req: Request) {
+  try {
+    const { firstName, lastName, email, phone, message } = await req.json();
+
+    // Create transporter with Outlook SMTP
+    const transporter = nodemailer.createTransport({
+      host: "smtp.office365.com",
+      port: 587,
+      secure: false, // STARTTLS
+      auth: {
+        user: process.env.OUTLOOK_USER, // your Outlook email
+        pass: process.env.OUTLOOK_PASS, // app password (NOT your regular password)
+      },
+    });
+
+    // Compose email
+    const mailOptions = {
+      from: process.env.OUTLOOK_USER,
+      to: process.env.OUTLOOK_USER, // send to yourself
+      replyTo: email,
+      subject: `New Contact Form Submission from ${firstName} ${lastName}`,
+      text: `
+        Name: ${firstName} ${lastName}
+        Email: ${email}
+        Phone: ${phone || "N/A"}
+        Message:
+        ${message}
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    return NextResponse.json({ success: true, message: "Email sent successfully!" });
+  } catch (error) {
+    console.error("Email sending error:", error);
+    return NextResponse.json(
+      { success: false, message: "Failed to send email." },
+      { status: 500 }
+    );
+  }
+}
